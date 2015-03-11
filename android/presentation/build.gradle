@@ -10,6 +10,8 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -23,4 +25,9 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile project(':domain')
+
+    androidTestCompile 'org.mockito:mockito-core:1.+'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.+'
+    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+
 }

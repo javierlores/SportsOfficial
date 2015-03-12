@@ -1,9 +1,11 @@
-package example.example.com.sportsofficial;
+package example.example.com.sportsofficial.views;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import example.example.com.sportsofficial.R;
 
 
 public class MainActivity extends ActionBarActivity {

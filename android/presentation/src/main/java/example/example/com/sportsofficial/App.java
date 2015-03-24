@@ -20,7 +20,7 @@ public class App extends Application {
         return Arrays.<Object>asList(new AppModule(this));
     }
 
-    public ObjectGraph createScopedGraph(Object... modules) {
-        return mObjectGraph.plus(modules);
+    public ObjectGraph getObjectGraph() {
+        return mObjectGraph;
     }
 }

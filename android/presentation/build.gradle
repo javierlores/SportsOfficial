@@ -4,6 +4,9 @@ android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
+    packagingOptions {
+        exclude 'LICENSE.txt'
+    }
     defaultConfig {
         applicationId "example.example.com.sportsofficial"
         minSdkVersion 14
@@ -24,13 +27,18 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':domain')
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.squareup.dagger:dagger:1.2.+'
+    compile 'com.getpebble:pebblekit:2.6.0'
     provided 'com.squareup.dagger:dagger-compiler:1.2.+'
-
     androidTestCompile 'org.mockito:mockito-core:1.+'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.0'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.squareup.dagger:dagger:1.2.+'
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/groups/public/" }
 }

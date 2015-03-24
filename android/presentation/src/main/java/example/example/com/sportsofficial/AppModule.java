@@ -1,16 +1,13 @@
 package example.example.com.sportsofficial;
 
-import android.content.Context;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module(
-        injects = {
-                App.class
-        }
+        injects = App.class,
+        includes = InteractorsModule.class
 )
 public class AppModule {
     private App mApp;
@@ -19,7 +16,8 @@ public class AppModule {
         mApp = app;
     }
 
-    @Provides @Singleton public Context providesApplicationContext() {
+    @Provides @Singleton
+    public App provideApplication() {
         return mApp;
     }
 }

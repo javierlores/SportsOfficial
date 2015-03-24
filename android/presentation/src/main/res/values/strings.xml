@@ -1,6 +1,47 @@
 <resources>
     <string name="app_name">SportsOfficial</string>
 
-    <string name="hello_world">Hello world!</string>
+    <!-- Actions -->
+    <string name="action_home">Home</string>
+    <string name="action_sync">Sync</string>
     <string name="action_settings">Settings</string>
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="title_activity_test_fragment">TestFragmentActivity</string>
+
+    <!-- SportsTabFragment Arg Keys -->
+    <string name="sport">Sport</string>
+
+    <!-- Tab  Names -->
+    <string name="leagues">Leagues</string>
+    <string name="tournaments">Tournaments</string>
+    <string name="matches">Matches</string>
+
+    <!-- Dialogs -->
+    <string name="create_tournament_title">Create Tournament</string>
+    <string name="create_league_title">Create League</string>
+    <string name="create_match_title">Create Match</string>
+    <string name="create_sport">Create Sport</string>
+    <string name="change_pebble_settings_title">Change Pebble Settings</string>
+    <string name="name">Name</string>
+    <string name="home_team">Home Team</string>
+    <string name="away_team">Away Team</string>
+    <string name="league">League</string>
+    <string name="tournament">Tournament</string>
+    <string name="venue">Venue</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="address">Address</string>
+    <string name="notes">Notes</string>
+
+    <string name="create">CREATE</string>
+    <string name="cancel">CANCEL</string>
+    <string name="save">SAVE</string>
+
+    <string name="long_click">Long click value</string>
+    <string name="single_click">Single click value</string>
+    <string name="double_click">Double click value</string>
+
 </resources>

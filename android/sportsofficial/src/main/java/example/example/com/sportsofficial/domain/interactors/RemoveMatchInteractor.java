@@ -5,7 +5,7 @@ import example.example.com.sportsofficial.domain.exceptions.ErrorBundle;
 
 public interface RemoveMatchInteractor extends Interactor {
     public interface Callback {
-        public void onMatchRemoved();
+        public void onMatchRemoved(int matchId);
         public void onError(ErrorBundle errorBundle);
     }
 

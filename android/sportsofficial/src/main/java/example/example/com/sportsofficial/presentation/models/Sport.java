@@ -1,19 +1,35 @@
 package example.example.com.sportsofficial.presentation.models;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class Sport implements Parcelable {
+public class Sport {
     private int mId;
     private String mName;
+    private int mSingleClick;
+    private int mDoubleClick;
+    private int mLongClick;
     private int mIcon;
     private boolean mHasLeagues;
     private boolean mHasTournaments;
     private boolean mHasMatches;
 
+    public Sport() {
+        mId = -1;
+        mName = null;
+        mSingleClick = -1;
+        mDoubleClick = -1;
+        mLongClick = -1;
+        mIcon = -1;
+        mHasLeagues = false;
+        mHasTournaments = false;
+        mHasMatches = false;
+    }
+
     public Sport(String name, int icon, boolean hasLeagues, boolean hasTournaments, boolean hasMatches) {
+        mId = -1;
         mName = name;
+        mSingleClick = -1;
+        mDoubleClick = -1;
+        mLongClick = -1;
         mIcon = icon;
         mHasLeagues = hasLeagues;
         mHasTournaments = hasTournaments;
@@ -26,6 +42,18 @@ public class Sport implements Parcelable {
 
     public String getName() {
         return mName;
+    }
+
+    public int getSingleClick() {
+        return mSingleClick;
+    }
+
+    public int getDoubleClick() {
+        return mDoubleClick;
+    }
+
+    public int getLongClick() {
+        return mLongClick;
     }
 
     public int getIcon() {
@@ -52,6 +80,18 @@ public class Sport implements Parcelable {
         mName = name;
     }
 
+    public void setSingleClick(int singleClick) {
+        mSingleClick = singleClick;
+    }
+
+    public void setDoubleClick(int doubleClick) {
+        mDoubleClick = doubleClick;
+    }
+
+    public void setLongClick(int longClick) {
+        mLongClick = longClick;
+    }
+
     public void setIcon(int icon) {
         mIcon = icon;
     }
@@ -67,39 +107,4 @@ public class Sport implements Parcelable {
     public void setHasMatches(boolean hasMatches) {
         mHasMatches = hasMatches;
     }
-
-    protected Sport(Parcel in) {
-        mName = in.readString();
-        mIcon = in.readInt();
-        mHasLeagues = in.readByte() != 0x00;
-        mHasTournaments = in.readByte() != 0x00;
-        mHasMatches = in.readByte() != 0x00;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mName);
-        dest.writeInt(mIcon);
-        dest.writeByte((byte) (mHasLeagues ? 0x01 : 0x00));
-        dest.writeByte((byte) (mHasTournaments ? 0x01 : 0x00));
-        dest.writeByte((byte) (mHasMatches ? 0x01 : 0x00));
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Sport> CREATOR = new Parcelable.Creator<Sport>() {
-        @Override
-        public Sport createFromParcel(Parcel in) {
-            return new Sport(in);
-        }
-
-        @Override
-        public Sport[] newArray(int size) {
-            return new Sport[size];
-        }
-    };
 }

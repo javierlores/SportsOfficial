@@ -1,51 +1,49 @@
 package example.example.com.sportsofficial.domain.interactors;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
-import example.example.com.sportsofficial.data.repositories.MatchRepository;
+import example.example.com.sportsofficial.data.repositories.SportRepository;
 import example.example.com.sportsofficial.domain.exceptions.ErrorBundle;
 import example.example.com.sportsofficial.domain.executor.PostExecutionThread;
 import example.example.com.sportsofficial.domain.executor.ThreadExecutor;
-import example.example.com.sportsofficial.presentation.models.Match;
+import example.example.com.sportsofficial.presentation.models.Sport;
 
-
-public class AddMatchInteractorImpl implements AddMatchInteractor {
-    private final MatchRepository mMatchRepository;
+public class GetSportListInteractorImpl implements GetSportListInteractor {
+    private final SportRepository mSportRepository;
     private final ThreadExecutor mThreadExecutor;
     private final PostExecutionThread mPostExecutionThread;
 
-    private Match mMatch;
     private Callback mCallback;
 
     @Inject
-    public AddMatchInteractorImpl(MatchRepository matchRepository,
+    public GetSportListInteractorImpl(SportRepository sportRepository,
                                   ThreadExecutor threadExecutor,
                                   PostExecutionThread postExecutionThread) {
-        mMatchRepository = matchRepository;
+        mSportRepository = sportRepository;
         mThreadExecutor = threadExecutor;
         mPostExecutionThread = postExecutionThread;
     }
 
     @Override
-    public void execute(Match match, Callback callback) {
-        mMatch = match;
+    public void execute(Callback callback) {
         mCallback = callback;
         mThreadExecutor.execute(this);
     }
 
     @Override
     public void run() {
-        mMatchRepository.addMatch(mMatch, mAddMatchCallback);
+        mSportRepository.getSportList(mGetSportListCallback);
     }
 
-    private  MatchRepository.AddMatchCallback mAddMatchCallback =
-            new MatchRepository.AddMatchCallback() {
+    private SportRepository.GetSportListCallback mGetSportListCallback = new SportRepository.GetSportListCallback() {
         @Override
-        public void onMatchAdded(final Match match) {
+        public void onSportListLoaded(final List<Sport> sportList) {
             mPostExecutionThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    mCallback.onMatchAdded(match);
+                    mCallback.onSportListLoaded(sportList);
                 }
             });
         }

@@ -39,11 +39,11 @@ public class RemoveMatchInteractorImpl implements RemoveMatchInteractor {
     private MatchRepository.RemoveMatchCallback mRemoveMatchCallback =
             new MatchRepository.RemoveMatchCallback() {
         @Override
-        public void onMatchRemoved() {
+        public void onMatchRemoved(final int matchId) {
             mPostExecutionThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    mCallback.onMatchRemoved();
+                    mCallback.onMatchRemoved(matchId);
                 }
             });
         }

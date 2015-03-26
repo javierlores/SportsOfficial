@@ -6,7 +6,7 @@ import example.example.com.sportsofficial.presentation.models.Match;
 
 public interface AddMatchInteractor extends Interactor {
     public interface Callback {
-        public void onMatchAdded();
+        public void onMatchAdded(Match match);
         public void onError(ErrorBundle errorBundle);
     }
 

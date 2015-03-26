@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import example.example.com.sportsofficial.data.datasources.DatabaseMatchStorage;
 import example.example.com.sportsofficial.data.repositories.LeagueRepository;
 import example.example.com.sportsofficial.data.repositories.MatchRepository;
 import example.example.com.sportsofficial.data.repositories.SportRepository;
@@ -16,7 +17,10 @@ import example.example.com.sportsofficial.presentation.thread.UIThread;
 
 @Module(
         injects = App.class,
-        includes = InteractorsModule.class
+        includes = {
+                LocalDatabaseModule.class,
+                InteractorsModule.class
+        }
 )
 public class AppModule {
     private App mApp;
@@ -41,8 +45,8 @@ public class AppModule {
     }
 
     @Provides @Singleton
-    public MatchRepository provideMatchRepository() {
-        return new MatchRepository();
+    public MatchRepository provideMatchRepository(DatabaseMatchStorage databaseMatchStorage) {
+        return new MatchRepository(databaseMatchStorage);
     }
 
     @Provides @Singleton
@@ -55,8 +59,8 @@ public class AppModule {
         return new TournamentRepository();
     }
 
-    public @Provides @Singleton
-    SportRepository provideSportRepository() {
+    @Provides @Singleton
+    public SportRepository provideSportRepository() {
         return new SportRepository();
     }
 }

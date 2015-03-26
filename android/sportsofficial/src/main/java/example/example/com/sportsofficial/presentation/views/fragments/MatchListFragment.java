@@ -199,8 +199,8 @@ public class MatchListFragment extends Fragment implements MatchListView, ListVi
                 ViewHolder holder = (ViewHolder) rowView.getTag();
 
                 holder.game.setText(mMatchList.get(position).toString());
-                holder.date.setText(mMatchList.get(position).getDate().toString());
-                holder.time.setText(mMatchList.get(position).getTime().toString());
+                //holder.date.setText(mMatchList.get(position).getDate().toString());
+               // holder.time.setText(mMatchList.get(position).getTime().toString());
             }
 
             return rowView;

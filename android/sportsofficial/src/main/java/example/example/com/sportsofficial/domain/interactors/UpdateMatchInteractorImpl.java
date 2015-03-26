@@ -43,7 +43,7 @@ public class UpdateMatchInteractorImpl implements UpdateMatchInteractor {
     private MatchRepository.UpdateMatchCallback mUpdateMatchCallback =
             new MatchRepository.UpdateMatchCallback() {
         @Override
-        public void onMatchUpdated() {
+        public void onMatchUpdated(Match match) {
             mPostExecutionThread.post(new Runnable() {
                 @Override
                 public void run() {

@@ -24,6 +24,8 @@ import example.example.com.sportsofficial.domain.interactors.GetMatchListInterac
 import example.example.com.sportsofficial.domain.interactors.GetMatchListInteractorImpl;
 import example.example.com.sportsofficial.domain.interactors.GetSportInteractor;
 import example.example.com.sportsofficial.domain.interactors.GetSportInteractorImpl;
+import example.example.com.sportsofficial.domain.interactors.GetSportListInteractor;
+import example.example.com.sportsofficial.domain.interactors.GetSportListInteractorImpl;
 import example.example.com.sportsofficial.domain.interactors.GetTournamentListInteractor;
 import example.example.com.sportsofficial.domain.interactors.GetTournamentListInteractorImpl;
 import example.example.com.sportsofficial.domain.interactors.RemoveLeagueInteractor;
@@ -70,6 +72,13 @@ public class InteractorsModule {
     }
 
     @Provides
+    public GetSportListInteractor provideGetSportListInteractor(SportRepository sportRepository,
+                                                                ThreadExecutor threadExecutor,
+                                                                PostExecutionThread postExecutionThread) {
+        return new GetSportListInteractorImpl(sportRepository, threadExecutor, postExecutionThread);
+    }
+
+    @Provides
     public AddTournamentInteractor provideAddTournamentInteractor(TournamentRepository tournamentRepository,
                                                                   ThreadExecutor threadExecutor,
                                                                   PostExecutionThread postExecutionThread) {
@@ -103,6 +112,8 @@ public class InteractorsModule {
                                                         PostExecutionThread postExecutionThread) {
         return new GetSportInteractorImpl(sportRepository, threadExecutor, postExecutionThread);
     }
+
+
 
     @Provides
     public GetTournamentListInteractor provideGetTournamentListInteractor(TournamentRepository tournamentRepository,

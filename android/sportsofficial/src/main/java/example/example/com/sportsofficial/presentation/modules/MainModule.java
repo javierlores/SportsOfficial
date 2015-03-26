@@ -5,6 +5,10 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import example.example.com.sportsofficial.domain.interactors.AddMatchInteractor;
+import example.example.com.sportsofficial.domain.interactors.AddSportInteractorImpl;
+import example.example.com.sportsofficial.domain.interactors.GetSportListInteractor;
+import example.example.com.sportsofficial.domain.interactors.RemoveSportInteractor;
+import example.example.com.sportsofficial.domain.interactors.UpdateSportInteractor;
 import example.example.com.sportsofficial.presentation.App;
 import example.example.com.sportsofficial.presentation.models.MainModel;
 import example.example.com.sportsofficial.presentation.presenters.MainPresenter;
@@ -35,7 +39,16 @@ public class MainModule {
 
     @Provides @Singleton
     public MainPresenter providePresenter(App app, MainModel model, MainView view,
-                                                 AddMatchInteractor addMatchInteractor) {
-        return new MainPresenterImpl(app, model, view, addMatchInteractor);
+                                                 AddMatchInteractor addMatchInteractor,
+                                                 GetSportListInteractor getSportListInteractor,
+                                                 AddSportInteractorImpl addSportInteractor,
+                                                 RemoveSportInteractor removeSportInteractor,
+                                                 UpdateSportInteractor updateSportInteractor) {
+        return new MainPresenterImpl(app, model, view,
+                addMatchInteractor,
+                getSportListInteractor,
+                addSportInteractor,
+                removeSportInteractor,
+                updateSportInteractor);
     }
 }

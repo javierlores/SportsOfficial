@@ -9,12 +9,12 @@ public interface MainPresenter {
 
     public void onNavigationItemClicked(Navigator.NavItemType navItem, String sportTitle);
     public void onSyncClicked();
-    public void onPebbleSyncSuccess(String homeTeam, String awayTeam);
 
     public void onPebbleSportClicked();
     public void onChangePebbleSportPositiveClicked(String sport);
 
     public void onAddMatchDialogPositiveClicked(String homeTeam, String awayTeam);
-    public void onAddSportDialogPositiveClicked(String sportTitle);
+    public void onAddSportDialogPositiveClicked(String sportTitle, int singleClick, int doubleClick,
+                                                int longClick);
     public void onRemoveSportDialogPositiveClicked(String sportTitle);
 }

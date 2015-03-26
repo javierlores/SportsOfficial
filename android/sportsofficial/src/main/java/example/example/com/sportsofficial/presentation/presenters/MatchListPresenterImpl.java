@@ -3,7 +3,6 @@ package example.example.com.sportsofficial.presentation.presenters;
 import java.util.List;
 
 import example.example.com.sportsofficial.domain.exceptions.ErrorBundle;
-import example.example.com.sportsofficial.domain.interactors.AddMatchInteractor;
 import example.example.com.sportsofficial.domain.interactors.GetMatchListInteractor;
 import example.example.com.sportsofficial.domain.interactors.RemoveMatchInteractor;
 import example.example.com.sportsofficial.presentation.models.Match;
@@ -72,7 +71,7 @@ public class MatchListPresenterImpl implements MatchListPresenter {
     private GetMatchListInteractor.Callback mGetMatchListCallback = new GetMatchListInteractor.Callback() {
         @Override
         public void onMatchListLoaded(List<Match> matchList) {
-            //mView.setMatchList(matchList);
+            mView.setMatchList(matchList);
         }
 
         @Override
@@ -80,28 +79,15 @@ public class MatchListPresenterImpl implements MatchListPresenter {
 
         }
     };
-
-    private AddMatchInteractor.Callback mAddMatchCallback = new AddMatchInteractor.Callback() {
-        @Override
-        public void onMatchAdded() {
-
-        }
-
-        @Override
-        public void onError(ErrorBundle errorBundle) {
-
-        }
-    };
-
 
     private RemoveMatchInteractor.Callback mRemoveMatchCallback = new RemoveMatchInteractor.Callback() {
         @Override
-        public void onMatchRemoved() {
-
+        public void onMatchRemoved(int matchId) {
+            //mModel.removeMatch(matchId);
         }
 
         @Override
-        public void onError(ErrorBundle errorBundle) {
+        public void onError(ErrorBundle erBundle) {
 
         }
     };

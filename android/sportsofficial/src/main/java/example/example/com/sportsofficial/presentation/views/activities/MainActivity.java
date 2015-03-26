@@ -262,7 +262,7 @@ public class MainActivity extends ActionBarActivity implements MainView, Injecto
      */
     @Override
     public void onCreateMatchDialogPositiveClicked(String homeTeam, String awayTeam) {
-
+        mPresenter.onAddMatchDialogPositiveClicked(homeTeam, awayTeam);
     }
 
     /**
@@ -279,8 +279,9 @@ public class MainActivity extends ActionBarActivity implements MainView, Injecto
      * @param sportTitle
      */
     @Override
-    public void onAddSportDialogPositiveClicked(String sportTitle) {
-        mPresenter.onAddSportDialogPositiveClicked(sportTitle);
+    public void onAddSportDialogPositiveClicked(String sportTitle, int singleClick,
+                                                int doubleClick, int longClick) {
+        mPresenter.onAddSportDialogPositiveClicked(sportTitle, singleClick, doubleClick, longClick);
     }
 
     /**

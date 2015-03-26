@@ -42,6 +42,9 @@
     <string name="city">City</string>
     <string name="address">Address</string>
     <string name="notes">Notes</string>
+    <string name="single_click">Single click value</string>
+    <string name="double_click">Double click value</string>
+    <string name="long_click">Long click value</string>
 
     <string name="add">ADD</string>
     <string name="remove">REMOVE</string>

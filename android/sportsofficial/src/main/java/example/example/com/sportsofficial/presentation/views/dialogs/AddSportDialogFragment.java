@@ -17,7 +17,8 @@ import example.example.com.sportsofficial.R;
 
 public class AddSportDialogFragment extends DialogFragment {
     public interface AddSportDialogListener {
-        public void onAddSportDialogPositiveClicked(String name);
+        public void onAddSportDialogPositiveClicked(String name, int singleClick, int doubleClick,
+                                                    int longClick);
     }
 
     private AddSportDialogListener mListener;
@@ -45,9 +46,15 @@ public class AddSportDialogFragment extends DialogFragment {
                     public void onClick(View v) {
                         // Get input fields
                         EditText nameField = (EditText) view.findViewById(R.id.name);
+                        EditText singleClickField = (EditText) view.findViewById(R.id.single_click_value);
+                        EditText doubleClickField = (EditText) view.findViewById(R.id.double_click_value);
+                        EditText longClickField = (EditText) view.findViewById(R.id.long_click_value);
 
                         // Get inputted values
                         String name = nameField.getText().toString();
+                        String singleClick = singleClickField.getText().toString();
+                        String doubleClick = doubleClickField.getText().toString();
+                        String longClick = longClickField.getText().toString();
 
                         // Ensure inputted values
                         if (TextUtils.isEmpty(name)) {
@@ -55,7 +62,28 @@ public class AddSportDialogFragment extends DialogFragment {
                             return;
                         }
 
-                        mListener.onAddSportDialogPositiveClicked(name);
+                        if (TextUtils.isEmpty(singleClick)) {
+                            nameField.setError("Invalid single click value");
+                            return;
+                        }
+
+                        if (TextUtils.isEmpty(doubleClick)) {
+                            nameField.setError("Invalid double click value");
+                            return;
+                        }
+
+                        if (TextUtils.isEmpty(longClick)) {
+                            nameField.setError("Invalid long click value");
+                            return;
+                        }
+
+                        // Convert values
+                        int singleClickValue = Integer.valueOf(singleClick);
+                        int doubleClickValue = Integer.valueOf(doubleClick);
+                        int longClickValue = Integer.valueOf(longClick);
+
+                        mListener.onAddSportDialogPositiveClicked(name, singleClickValue,
+                                doubleClickValue, longClickValue);
                         dialog.dismiss();
                     }
                 });

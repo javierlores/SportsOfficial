@@ -9,9 +9,15 @@ import com.getpebble.android.kit.util.PebbleDictionary;
 import java.util.UUID;
 
 import example.example.com.sportsofficial.R;
+import example.example.com.sportsofficial.domain.exceptions.ErrorBundle;
 import example.example.com.sportsofficial.domain.interactors.AddMatchInteractor;
+import example.example.com.sportsofficial.domain.interactors.AddSportInteractor;
+import example.example.com.sportsofficial.domain.interactors.GetSportListInteractor;
+import example.example.com.sportsofficial.domain.interactors.RemoveSportInteractor;
+import example.example.com.sportsofficial.domain.interactors.UpdateSportInteractor;
 import example.example.com.sportsofficial.presentation.App;
 import example.example.com.sportsofficial.presentation.models.MainModel;
+import example.example.com.sportsofficial.presentation.models.Match;
 import example.example.com.sportsofficial.presentation.models.Sport;
 import example.example.com.sportsofficial.presentation.views.MainView;
 import example.example.com.sportsofficial.presentation.views.Navigator;
@@ -32,14 +38,30 @@ public class MainPresenterImpl implements MainPresenter {
     private MainView mView;
 
     private AddMatchInteractor mAddMatchInteractor;
+    private GetSportListInteractor mGetSportListInteractor;
+    private AddSportInteractor mAddSportInteractor;
+    private RemoveSportInteractor mRemoveSportInteractor;
+    private UpdateSportInteractor mUpdateSportInteractor;
+
+    private Match mTempMatch;
 
     public MainPresenterImpl(App app, MainModel model, MainView view,
-                             AddMatchInteractor addMatchInteractor) {
+                             AddMatchInteractor addMatchInteractor,
+                             GetSportListInteractor getSportListInteractor,
+                             AddSportInteractor addSportInteractor,
+                             RemoveSportInteractor removeSportInteractor,
+                             UpdateSportInteractor updateSportInteractor) {
         mApp = app;
         mModel = model;
         mView = view;
 
         mAddMatchInteractor = addMatchInteractor;
+        mGetSportListInteractor = getSportListInteractor;
+        mAddSportInteractor = addSportInteractor;
+        mRemoveSportInteractor = removeSportInteractor;
+        mUpdateSportInteractor = updateSportInteractor;
+
+        mTempMatch = null;
     }
 
     /**
@@ -130,11 +152,6 @@ public class MainPresenterImpl implements MainPresenter {
         mView.showPebbleSyncProgressDialog();
     }
 
-    @Override
-    public void onPebbleSyncSuccess(String homeTeam, String awayTeam) {
-        mView.closePebbleSyncProgressDialog();
-        mView.showCreateMatchDialog();
-    }
 
     @Override
     public void onPebbleSportClicked() {
@@ -142,30 +159,36 @@ public class MainPresenterImpl implements MainPresenter {
     }
 
     @Override
-    public void onChangePebbleSportPositiveClicked(String sport) {
+    public void onChangePebbleSportPositiveClicked(String sportTitle) {
+        Sport sport = mModel.getSport(sportTitle);
         PebbleKit.startAppOnPebble(mApp, PEBBLE_APP_UUID);
-
         PebbleDictionary click_settings = new PebbleDictionary();
 
-        //click_settings.addInt32(SINGLE_CLICK_KEY, singleClick);
-        //click_settings.addInt32(DOUBLE_CLICK_KEY, doubleClick);
-        //click_settings.addInt32(LONG_CLICK_KEY, longClick);
+        click_settings.addInt32(SINGLE_CLICK_KEY, sport.getSingleClick());
+        click_settings.addInt32(DOUBLE_CLICK_KEY, sport.getDoubleClick());
+        click_settings.addInt32(LONG_CLICK_KEY, sport.getLongClick());
 
         PebbleKit.sendDataToPebble(mApp, PEBBLE_APP_UUID, click_settings);
     }
 
     @Override
     public void onAddMatchDialogPositiveClicked(String homeTeam, String awayTeam) {
+        mTempMatch.setHomeTeamName(homeTeam);
+        mTempMatch.setAwayTeamName(awayTeam);
 
-
+        mAddMatchInteractor.execute(mTempMatch, mAddMatchCallback);
     }
 
     @Override
-    public void onAddSportDialogPositiveClicked(String sportTitle) {
-        Sport sport = new Sport(sportTitle, -1, true, true, true);
+    public void onAddSportDialogPositiveClicked(String sportTitle, int singleClick,
+                                                int doubleClick, int longClick) {
 
-        mModel.addSport(sport);
-        mView.addSportNav(sport);
+        Sport sport = new Sport(sportTitle, -1, true, true, true);
+        sport.setSingleClick(singleClick);
+        sport.setDoubleClick(doubleClick);
+        sport.setLongClick(longClick);
+
+        mAddSportInteractor.execute(sport, mAddSportCallback);
     }
 
     @Override
@@ -188,6 +211,37 @@ public class MainPresenterImpl implements MainPresenter {
             for(int i = DETAIL_POINTS_START; i < numScores + 100; i++){
                 detailedScore = data.getString(i);
             }
+
+            mTempMatch = new Match();
+            mTempMatch.setHomeTeamScore((int) (long) homeScore);
+            mTempMatch.setAwayTeamScore((int) (long) awayScore);
+
+            mView.closePebbleSyncProgressDialog();
+            mView.showCreateMatchDialog();
+        }
+    };
+
+    private AddMatchInteractor.Callback mAddMatchCallback = new AddMatchInteractor.Callback() {
+        @Override
+        public void onMatchAdded(Match match) {
+
+        }
+
+        @Override
+        public void onError(ErrorBundle errorBundle) {
+
+        }
+    };
+
+    private AddSportInteractor.Callback mAddSportCallback = new AddSportInteractor.Callback() {
+        @Override
+        public void onSportAdded() {
+
+        }
+
+        @Override
+        public void onError(ErrorBundle errorBundle) {
+
         }
     };
 }

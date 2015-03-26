@@ -1,7 +1,5 @@
 package example.example.com.sportsofficial.presentation.presenters;
 
-import android.util.Log;
-
 import java.util.List;
 
 import example.example.com.sportsofficial.domain.exceptions.ErrorBundle;
@@ -9,6 +7,7 @@ import example.example.com.sportsofficial.domain.interactors.GetMatchListInterac
 import example.example.com.sportsofficial.domain.interactors.RemoveMatchInteractor;
 import example.example.com.sportsofficial.presentation.models.Match;
 import example.example.com.sportsofficial.presentation.models.MatchListModel;
+import example.example.com.sportsofficial.presentation.models.Sport;
 import example.example.com.sportsofficial.presentation.views.MatchListView;
 
 public class MatchListPresenterImpl implements MatchListPresenter {
@@ -30,7 +29,9 @@ public class MatchListPresenterImpl implements MatchListPresenter {
 
     @Override
     public void setSportId(final int sportId) {
-        Log.i("TAG", Integer.toString(sportId));
+        Sport sport = new Sport();
+        sport.setId(sportId);
+        mModel.setSport(sport);
         mGetMatchListInteractor.executeSport(sportId, mGetMatchListCallback);
     }
 
@@ -59,6 +60,11 @@ public class MatchListPresenterImpl implements MatchListPresenter {
     @Override
     public void onPause() {
         mModel.deleteObserver(mView);
+    }
+
+    @Override
+    public void onRefreshView() {
+        mGetMatchListInteractor.executeSport(mModel.getSport().getId(), mGetMatchListCallback);
     }
 
     @Override

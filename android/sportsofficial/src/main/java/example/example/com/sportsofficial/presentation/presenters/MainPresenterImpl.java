@@ -70,27 +70,6 @@ public class MainPresenterImpl implements MainPresenter {
      */
     @Override
     public void onCreate() {
-        /*
-        // Add the default sports
-        int sportsCount = mApp.getResources().getInteger(R.integer.default_sports_count);
-        String[] sportNames = mApp.getResources().getStringArray(R.array.default_sport_names);
-        TypedArray sportIcons = mApp.getResources().obtainTypedArray(R.array.default_sport_icons);
-        TypedArray sportHasLeagues = mApp.getResources().obtainTypedArray(R.array.default_sports_has_leagues);
-        TypedArray sportHasTournaments = mApp.getResources().obtainTypedArray(R.array.default_sports_has_tournaments);
-        TypedArray sportHasMatches= mApp.getResources().obtainTypedArray(R.array.default_sports_has_matches);
-
-        for (int i = 0; i < sportsCount; i++) {
-            Sport sport = new Sport(sportNames[i],
-                    sportIcons.getResourceId(i, -1),
-                    sportHasLeagues.getBoolean(i, false),
-                    sportHasTournaments.getBoolean(i, false),
-                    sportHasMatches.getBoolean(i, false));
-
-            mModel.addSport(sport);
-            mView.addSportNav(sport);
-        }
-        */
-
         Match match = new Match();
         match.setSportId(1);
         match.setHomeTeamScore(10);
@@ -112,6 +91,7 @@ public class MainPresenterImpl implements MainPresenter {
         match.setHomeTeamName("FSU");
         match.setAwayTeamName("UF");
         mAddMatchInteractor.execute(match, mAddMatchCallback);
+
         match = new Match();
         match.setSportId(2);
         match.setHomeTeamScore(10);
@@ -275,7 +255,7 @@ public class MainPresenterImpl implements MainPresenter {
     private AddMatchInteractor.Callback mAddMatchCallback = new AddMatchInteractor.Callback() {
         @Override
         public void onMatchAdded(Match match) {
-
+            mView.refreshView();
         }
 
         @Override

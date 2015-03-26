@@ -13,6 +13,8 @@ public interface MainView {
     public void navigateToAbout();
     public void navigateToHelp();
 
+    public void refreshView();
+
     public void showPebbleSyncProgressDialog();
     public void closePebbleSyncProgressDialog();
 

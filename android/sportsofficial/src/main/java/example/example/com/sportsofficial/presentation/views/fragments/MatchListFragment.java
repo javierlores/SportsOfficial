@@ -119,6 +119,11 @@ public class MatchListFragment extends Fragment implements MatchListView, ListVi
         mAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void refreshView() {
+        mPresenter.onRefreshView();
+    }
+
     /**
      *
      * @param matchId

@@ -116,9 +116,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Create Football
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.SPORTS_KEY_NAME, "Football");
-        values.put(DatabaseHelper.SPORTS_KEY_SINGLE_CLICK, 6);
-        values.put(DatabaseHelper.SPORTS_KEY_DOUBLE_CLICK, 1);
-        values.put(DatabaseHelper.SPORTS_KEY_LONG_CLICK, 3);
+        values.put(DatabaseHelper.SPORTS_KEY_SINGLE_CLICK, 1);
+        values.put(DatabaseHelper.SPORTS_KEY_DOUBLE_CLICK, -1);
+        values.put(DatabaseHelper.SPORTS_KEY_LONG_CLICK, 6);
         db.insert(DatabaseHelper.TABLE_SPORTS, null, values);
 
 

@@ -11,6 +11,7 @@ public class MatchListModel extends Observable {
     private List<Match> mMatchList;
 
     public MatchListModel() {
+        mSport = null;
         mMatchList = new ArrayList<>();
     }
 

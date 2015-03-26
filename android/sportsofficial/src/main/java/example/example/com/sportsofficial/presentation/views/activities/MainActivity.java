@@ -398,6 +398,16 @@ public class MainActivity extends ActionBarActivity implements MainView, Injecto
         //startActivity(intent);
     }
 
+    @Override
+    public void refreshView() {
+        FragmentManager manager = getSupportFragmentManager();
+        MatchListFragment fragment = (MatchListFragment) manager.findFragmentByTag("Fragment");
+
+        if (fragment != null) {
+            fragment.refreshView();
+        }
+    }
+
     /**
      * Gets this Activity's object graph.
      *

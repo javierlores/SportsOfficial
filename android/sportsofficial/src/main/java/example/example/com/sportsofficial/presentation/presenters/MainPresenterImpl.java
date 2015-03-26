@@ -1,6 +1,7 @@
 package example.example.com.sportsofficial.presentation.presenters;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
@@ -90,6 +91,44 @@ public class MainPresenterImpl implements MainPresenter {
         }
         */
 
+        Match match = new Match();
+        match.setSportId(1);
+        match.setHomeTeamScore(10);
+        match.setAwayTeamScore(11);
+        match.setHomeTeamName("Dolphins");
+        match.setAwayTeamName("Jets");
+        mAddMatchInteractor.execute(match, mAddMatchCallback);
+        match = new Match();
+        match.setSportId(1);
+        match.setHomeTeamScore(10);
+        match.setAwayTeamScore(11);
+        match.setHomeTeamName("Patriots");
+        match.setAwayTeamName("Seahawks");
+        mAddMatchInteractor.execute(match, mAddMatchCallback);
+        match = new Match();
+        match.setSportId(1);
+        match.setHomeTeamScore(2);
+        match.setAwayTeamScore(3);
+        match.setHomeTeamName("FSU");
+        match.setAwayTeamName("UF");
+        mAddMatchInteractor.execute(match, mAddMatchCallback);
+        match = new Match();
+        match.setSportId(2);
+        match.setHomeTeamScore(10);
+        match.setAwayTeamScore(11);
+        match.setHomeTeamName("Heat");
+        match.setAwayTeamName("Thunder");
+
+        mAddMatchInteractor.execute(match, mAddMatchCallback);
+        match = new Match();
+        match.setSportId(3);
+        match.setHomeTeamScore(10);
+        match.setAwayTeamScore(11);
+        match.setHomeTeamName("Diamondback");
+        match.setAwayTeamName("Marlins");
+
+        mAddMatchInteractor.execute(match, mAddMatchCallback);
+
         mGetSportListInteractor.execute(mGetSportListCallback);
         mView.navigateToHome();
     }
@@ -125,6 +164,7 @@ public class MainPresenterImpl implements MainPresenter {
                 break;
             case SPORT:
                 mView.setActionBarTitle(sportTitle);
+                Log.i("TAG", Integer.toString(mModel.getSport(sportTitle).getId()));
                 mView.navigateToSportView(mModel.getSport(sportTitle).getId());
                 break;
             case ADD_SPORT:
@@ -164,6 +204,9 @@ public class MainPresenterImpl implements MainPresenter {
     @Override
     public void onChangePebbleSportPositiveClicked(String sportTitle) {
         Sport sport = mModel.getSport(sportTitle);
+
+        mModel.setCurrentSport(sport);
+
         PebbleKit.startAppOnPebble(mApp, PEBBLE_APP_UUID);
         PebbleDictionary click_settings = new PebbleDictionary();
 
@@ -214,7 +257,13 @@ public class MainPresenterImpl implements MainPresenter {
                 detailedScore = data.getString(i);
             }
 
+            if (mModel.getCurrentSport() == null) {
+                mView.closePebbleSyncProgressDialog();
+                return;
+            }
+
             mTempMatch = new Match();
+            mTempMatch.setSportId(mModel.getCurrentSport().getId());
             mTempMatch.setHomeTeamScore((int) (long) homeScore);
             mTempMatch.setAwayTeamScore((int) (long) awayScore);
 
@@ -240,8 +289,14 @@ public class MainPresenterImpl implements MainPresenter {
         @Override
         public void onSportListLoaded(List<Sport> sportList) {
             for (Sport sport : sportList) {
-                mModel.addSport(sport);
-                mView.addSportNav(sport);
+                if (!mModel.hasSport(sport)) {
+                    mModel.addSport(sport);
+                    mView.addSportNav(sport);
+                }
+            }
+
+            if (mModel.getSports().size() > 0) {
+                mModel.setCurrentSport(mModel.getSports().get(0));
             }
         }
 
@@ -255,8 +310,7 @@ public class MainPresenterImpl implements MainPresenter {
             new AddSportInteractor.Callback() {
         @Override
         public void onSportAdded(Sport sport) {
-            mModel.addSport(sport);
-            mView.addSportNav(sport);
+            mGetSportListInteractor.execute(mGetSportListCallback);
         }
 
         @Override

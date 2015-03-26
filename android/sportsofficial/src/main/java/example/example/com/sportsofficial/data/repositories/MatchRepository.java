@@ -49,21 +49,21 @@ public class MatchRepository {
     }
 
     public void getMatchListBySportId(final int sportId, GetMatchListCallback callback) {
-        List<Match> matchList = mDatabaseMatchStorage.getMatchList();
+        List<Match> matchList = mDatabaseMatchStorage.getMatchList(sportId);
 
         callback.onMatchListLoaded(matchList);
     }
 
     public void getMatchListByLeagueId(final int leagueId, GetMatchListCallback callback) {
-        List<Match> matchList = mDatabaseMatchStorage.getMatchList();
+        //List<Match> matchList = mDatabaseMatchStorage.getMatchList();
 
-        callback.onMatchListLoaded(matchList);
+        //callback.onMatchListLoaded(matchList);
     }
 
     public void getMatchListByTournamentID(final int tournamentId, GetMatchListCallback callback) {
-        List<Match> matchList = mDatabaseMatchStorage.getMatchList();
+        //List<Match> matchList = mDatabaseMatchStorage.getMatchList();
 
-        callback.onMatchListLoaded(matchList);
+        //callback.onMatchListLoaded(matchList);
     }
 
     public void addMatch(Match match, AddMatchCallback callback) {

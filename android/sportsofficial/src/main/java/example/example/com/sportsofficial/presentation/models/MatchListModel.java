@@ -2,6 +2,7 @@ package example.example.com.sportsofficial.presentation.models;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 
@@ -25,16 +26,29 @@ public class MatchListModel extends Observable {
         mSport = sport;
     }
 
-    public void addMatch(Match match) {
+    public boolean hasMatch(Match matchSearch) {
+        for(Match match : mMatchList) {
+            if (match.getMatchId() == matchSearch.getMatchId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public synchronized void addMatch(Match match) {
         mMatchList.add(match);
         setChanged();
         notifyObservers();
     }
 
-    public void removeMatch(int matchId) {
-        for (Match match : mMatchList) {
+    public synchronized void removeMatch(int matchId) {
+        Iterator<Match> matchIterator = mMatchList.iterator();
+
+        while (matchIterator.hasNext()) {
+            Match match = matchIterator.next();
+
             if (match.getMatchId() == matchId) {
-                mMatchList.remove(match);
+                matchIterator.remove();
             }
         }
         setChanged();

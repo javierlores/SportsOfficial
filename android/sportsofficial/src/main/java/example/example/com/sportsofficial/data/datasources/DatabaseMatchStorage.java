@@ -25,24 +25,29 @@ public class DatabaseMatchStorage {
 
         //return res;
         Match match = new Match();
+        match.setMatchId(res.getInt(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_ID)));
+        match.setSportId(res.getInt(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_SPORT_ID)));
         match.setHomeTeamName(res.getString(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_HOME_TEAM_NAME)));
         match.setHomeTeamScore(res.getInt(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_HOME_TEAM_SCORE)));
         match.setAwayTeamName(res.getString(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_AWAY_TEAM_NAME)));
         match.setAwayTeamScore(res.getInt(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_AWAY_TEAM_SCORE)));
         String date_time = res.getString(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_DATETIME));
         res.close();
-        database.close();
         return match;
     }
 
-    public List<Match> getMatchList() {
+    public List<Match> getMatchList(int sportId) {
         SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
         List list = new ArrayList();
-        Cursor res = database.rawQuery("select * from matches", null);
+        Cursor res = database.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_MATCHES
+                + " WHERE " + DatabaseHelper.MATCHES_KEY_SPORT_ID + "=" + sportId,
+                null);
         res.moveToFirst();
 
         while (res.isAfterLast() == false) {
             Match match = new Match();
+            match.setMatchId(res.getInt(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_ID)));
+            match.setSportId(res.getInt(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_SPORT_ID)));
             match.setHomeTeamName(res.getString(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_HOME_TEAM_NAME)));
             match.setHomeTeamScore(res.getInt(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_HOME_TEAM_SCORE)));
             match.setAwayTeamName(res.getString(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_AWAY_TEAM_NAME)));
@@ -53,20 +58,19 @@ public class DatabaseMatchStorage {
             res.moveToNext();
         }
         res.close();
-        database.close();
         return list;
     }
 
     public void addMatch(Match match) {
         SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.MATCHES_KEY_SPORT_ID, match.getSportId());
         values.put(DatabaseHelper.MATCHES_KEY_HOME_TEAM_NAME, match.getHomeTeamName());
         values.put(DatabaseHelper.MATCHES_KEY_AWAY_TEAM_NAME, match.getAwayTeamName());
         values.put(DatabaseHelper.MATCHES_KEY_HOME_TEAM_SCORE, match.getHomeTeamScore());
         values.put(DatabaseHelper.MATCHES_KEY_AWAY_TEAM_SCORE, match.getAwayTeamScore());
         // Date and time
         database.insert(DatabaseHelper.TABLE_MATCHES, null, values);
-        database.close();
     }
 
     public void removeMatch(int id) {
@@ -74,11 +78,9 @@ public class DatabaseMatchStorage {
         database.delete("matches",
                 "id = ? ",
                 new String[] { Integer.toString(id) });
-        database.close();
     }
 
     public void updateMatch(Match match) {
         SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
-        database.close();
     }
 }

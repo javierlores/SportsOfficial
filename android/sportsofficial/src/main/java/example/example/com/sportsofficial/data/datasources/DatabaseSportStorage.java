@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,6 @@ public class DatabaseSportStorage {
         sport.setDoubleClick(res.getInt(res.getColumnIndex(DatabaseHelper.SPORTS_KEY_DOUBLE_CLICK)));
         sport.setLongClick(res.getInt(res.getColumnIndex(DatabaseHelper.SPORTS_KEY_LONG_CLICK)));
         res.close();
-        database.close();
         return sport;
     }
 
@@ -50,21 +48,18 @@ public class DatabaseSportStorage {
             res.moveToNext();
         }
         res.close();
-        database.close();
         return list;
     }
 
     public void addSport(Sport sport) {
         SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        Log.i("SPORT", sport.getName());
         values.put(DatabaseHelper.SPORTS_KEY_NAME, sport.getName());
         values.put(DatabaseHelper.SPORTS_KEY_SINGLE_CLICK, sport.getSingleClick());
         values.put(DatabaseHelper.SPORTS_KEY_DOUBLE_CLICK, sport.getDoubleClick());
         values.put(DatabaseHelper.SPORTS_KEY_LONG_CLICK, sport.getLongClick());
         // Date and time
         database.insert(DatabaseHelper.TABLE_SPORTS, null, values);
-        database.close();
     }
 
     public void removeSport(int id) {
@@ -72,11 +67,9 @@ public class DatabaseSportStorage {
         database.delete("sports",
                 "id = ? ",
                 new String[] { Integer.toString(id) });
-        database.close();
     }
 
     public void updateSport(Sport sport) {
         SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
-        database.close();
     }
 }

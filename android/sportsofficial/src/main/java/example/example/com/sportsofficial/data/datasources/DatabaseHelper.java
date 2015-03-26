@@ -1,6 +1,7 @@
 package example.example.com.sportsofficial.data.datasources;
 
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -8,8 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
     // Database version
     public static final int DATABASE_VERSION = 1;
+
     // Database name
     public static final String DATABASE_NAME = "sports";
+
     // Sports table
     public static final String TABLE_SPORTS = "sports";
     public static final String SPORTS_KEY_ID = "id";
@@ -17,6 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String SPORTS_KEY_SINGLE_CLICK = "single";
     public static final String SPORTS_KEY_DOUBLE_CLICK = "double";
     public static final String SPORTS_KEY_LONG_CLICK = "long";
+
     // Leagues table
     public static final String TABLE_LEAGUES = "leagues";
     public static final String LEAGUES_KEY_ID = "id";
@@ -24,6 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String LEAGUES_KEY_COUNTRY = "country";
     public static final String LEAGUES_KEY_STATE = "state";
     public static final String LEAGUES_KEY_CITY = "city";
+
     // Tournaments table
     public static final String TABLE_TOURNAMENTS = "tournaments";
     public static final String TOURNAMENTS_KEY_ID = "id";
@@ -33,9 +38,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TOURNAMENTS_KEY_COUNTRY = "country";
     public static final String TOURNAMENTS_KEY_STATE = "state";
     public static final String TOURNAMENTS_KEY_CITY = "city";
+
     // Matches table
     public static final String TABLE_MATCHES = "matches";
     public static final String MATCHES_KEY_ID = "id";
+    public static final String MATCHES_KEY_SPORT_ID = "sport_id";
     public static final String MATCHES_KEY_HOME_TEAM_NAME = "home_team_name";
     public static final String MATCHES_KEY_AWAY_TEAM_NAME = "away_team_name";
     public static final String MATCHES_KEY_HOME_TEAM_SCORE = "home_team_score";
@@ -57,6 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + SPORTS_KEY_DOUBLE_CLICK + " INTEGER,"
                 + SPORTS_KEY_LONG_CLICK + " INTEGER" + ")";
         db.execSQL(CREATE_SPORTS_TABLE);
+
         // Create the leagues table
         String CREATE_LEAGUES_TABLE = "CREATE TABLE " + TABLE_LEAGUES + "("
                 + LEAGUES_KEY_ID + " INTEGER NOT NULL PRIMARY KEY,"
@@ -65,6 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + LEAGUES_KEY_STATE + " TEXT,"
                 + LEAGUES_KEY_CITY + " TEXT" + ")";
         db.execSQL(CREATE_LEAGUES_TABLE);
+
         // Create the tournaments table
         String CREATE_TOURNAMENTS_TABLE = "CREATE TABLE " + TABLE_TOURNAMENTS + "("
                 + TOURNAMENTS_KEY_ID + " INTEGER NOT NULL PRIMARY KEY,"
@@ -75,15 +84,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + TOURNAMENTS_KEY_CITY + " TEXT,"
                 + TOURNAMENTS_KEY_DATE + " DATE" + ")";
         db.execSQL(CREATE_TOURNAMENTS_TABLE);
+
         // Create the matches table
         String CREATE_MATCHES_TABLE = "CREATE TABLE " + TABLE_MATCHES + "("
                 + MATCHES_KEY_ID + " INTEGER NOT NULL PRIMARY KEY,"
+                + MATCHES_KEY_SPORT_ID + " INTEGER,"
                 + MATCHES_KEY_HOME_TEAM_NAME + " TEXT,"
                 + MATCHES_KEY_AWAY_TEAM_NAME + " TEXT,"
                 + MATCHES_KEY_HOME_TEAM_SCORE + " INTEGER,"
                 + MATCHES_KEY_AWAY_TEAM_SCORE + " INTEGER,"
-                + MATCHES_KEY_DATETIME + " DATETIME" + ")";
+                + MATCHES_KEY_DATETIME + " DATETIME,"
+                + "FOREIGN KEY(" + MATCHES_KEY_SPORT_ID + ") REFERENCES " + TABLE_SPORTS + "("
+                + SPORTS_KEY_ID + ")" + ")";
         db.execSQL(CREATE_MATCHES_TABLE);
+
+        createInitialSports(db);
     }
 
     @Override
@@ -95,5 +110,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
         // Create tables again
         onCreate(db);
+    }
+
+    private void createInitialSports(SQLiteDatabase db) {
+        // Create Football
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.SPORTS_KEY_NAME, "Football");
+        values.put(DatabaseHelper.SPORTS_KEY_SINGLE_CLICK, 6);
+        values.put(DatabaseHelper.SPORTS_KEY_DOUBLE_CLICK, 1);
+        values.put(DatabaseHelper.SPORTS_KEY_LONG_CLICK, 3);
+        db.insert(DatabaseHelper.TABLE_SPORTS, null, values);
+
+
+        // Create Basketball
+        values = new ContentValues();
+        values.put(DatabaseHelper.SPORTS_KEY_NAME, "Basketball");
+        values.put(DatabaseHelper.SPORTS_KEY_SINGLE_CLICK, 1);
+        values.put(DatabaseHelper.SPORTS_KEY_DOUBLE_CLICK, 2);
+        values.put(DatabaseHelper.SPORTS_KEY_LONG_CLICK, 3);
+        db.insert(DatabaseHelper.TABLE_SPORTS, null, values);
+
+
+        // Create Baseball
+        values = new ContentValues();
+        values.put(DatabaseHelper.SPORTS_KEY_NAME, "Baseball");
+        values.put(DatabaseHelper.SPORTS_KEY_SINGLE_CLICK, 1);
+        values.put(DatabaseHelper.SPORTS_KEY_DOUBLE_CLICK, -1);
+        values.put(DatabaseHelper.SPORTS_KEY_LONG_CLICK, 0);
+        db.insert(DatabaseHelper.TABLE_SPORTS, null, values);
+
+        // Create Soccer
+        values = new ContentValues();
+        values.put(DatabaseHelper.SPORTS_KEY_NAME, "Soccer");
+        values.put(DatabaseHelper.SPORTS_KEY_SINGLE_CLICK, 1);
+        values.put(DatabaseHelper.SPORTS_KEY_DOUBLE_CLICK, -1);
+        values.put(DatabaseHelper.SPORTS_KEY_LONG_CLICK, 0);
+        db.insert(DatabaseHelper.TABLE_SPORTS, null, values);
     }
 }

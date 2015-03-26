@@ -4,10 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainModel {
+    private Sport mCurrentSport;
     private List<Sport> mSports;
 
     public MainModel() {
+        mCurrentSport = null;
         mSports = new ArrayList<>();
+    }
+
+    public Sport getCurrentSport() {
+        return mCurrentSport;
+    }
+
+    public boolean hasSport(Sport sportSearch) {
+        for(Sport sport : mSports) {
+            if (sport.getId() == sportSearch.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setCurrentSport(Sport sport) {
+        mCurrentSport = sport;
     }
 
     public Sport getSport(String sportTitle) {

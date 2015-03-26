@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -47,18 +49,7 @@ public class MatchListFragment extends Fragment implements MatchListView, ListVi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        int sportId = getArguments().getInt(getString(R.string.sport), -1);
-        int leagueId = getArguments().getInt(getString(R.string.league), -1);
-        int tournamentId = getArguments().getInt(getString(R.string.tournament), -1);
-
-        if (leagueId != -1) {
-            mPresenter.setLeagueId(leagueId);
-        } else if (tournamentId != -1) {
-            mPresenter.setTournamentId(tournamentId);
-        } else {
-            mPresenter.setSportId(sportId);
-        }
+        mPresenter.setSportId(getArguments().getInt(getString(R.string.sport), -1));
     }
 
     @Override
@@ -69,6 +60,16 @@ public class MatchListFragment extends Fragment implements MatchListView, ListVi
         // Setup the list view
         mListView = (ListView) view.findViewById(R.id.list);
         mListView.setOnItemClickListener(this);
+
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent,
+                                           final View view, final int position, long id) {
+                removeRow(view, position);
+                return true;
+            }
+        });
 
         // Call the presenter to allow him to do his list setup
         mPresenter.onCreateView();
@@ -82,18 +83,7 @@ public class MatchListFragment extends Fragment implements MatchListView, ListVi
         // Setup the dagger graph
         List<Object> modules = Arrays.<Object>asList(new MatchListModule(this));
 
-        int leagueId = getArguments().getInt(getString(R.string.league), -1);
-        int tournamentId = getArguments().getInt(getString(R.string.tournament), -1);
-
-        Injector injector;
-
-        if (leagueId != -1 || tournamentId != -1) {
-            injector = (Injector) activity;
-        } else {
-            FragmentManager manager = getActivity().getSupportFragmentManager();
-            injector = (Injector) manager.findFragmentByTag("TabFragment");
-        }
-
+        Injector injector = (Injector) activity;
         mObjectGraph = injector.getObjectGraph().plus(modules.toArray());
 
         // Ensure this is the first time creating the graph
@@ -131,18 +121,6 @@ public class MatchListFragment extends Fragment implements MatchListView, ListVi
 
     /**
      *
-     * @param parent
-     * @param view
-     * @param position
-     * @param id
-     */
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mPresenter.onMatchClicked(position);
-    }
-
-    /**
-     *
      * @param matchId
      */
     @Override
@@ -158,6 +136,50 @@ public class MatchListFragment extends Fragment implements MatchListView, ListVi
         // Insert the fragment by replacing the existing fragment
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment, fragment, "MatchFragment").commit();
+    }
+
+    /**
+     *
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        //mPresenter.onRemoveMatchClicked(position);
+    }
+
+    private void removeRow(final View row, final int position) {
+        final int initialHeight = row.getHeight();
+        Animation animation = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime,
+                                               Transformation t) {
+                super.applyTransformation(interpolatedTime, t);
+                int newHeight = (int) (initialHeight * (1 - interpolatedTime));
+                if (newHeight > 0) {
+                    row.getLayoutParams().height = newHeight;
+                    row.requestLayout();
+                }
+            }
+        };
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                row.getLayoutParams().height = initialHeight;
+                row.requestLayout();
+                mPresenter.onRemoveMatchClicked(position);
+            }
+        });
+        animation.setDuration(300);
+        row.startAnimation(animation);
     }
 
      /**

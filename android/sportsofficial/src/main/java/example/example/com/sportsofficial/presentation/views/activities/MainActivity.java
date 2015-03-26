@@ -29,8 +29,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.ObjectGraph;
-import example.example.com.sportsofficial.presentation.App;
 import example.example.com.sportsofficial.R;
+import example.example.com.sportsofficial.presentation.App;
 import example.example.com.sportsofficial.presentation.models.Sport;
 import example.example.com.sportsofficial.presentation.modules.MainModule;
 import example.example.com.sportsofficial.presentation.presenters.MainPresenter;
@@ -42,7 +42,7 @@ import example.example.com.sportsofficial.presentation.views.dialogs.ChangePebbl
 import example.example.com.sportsofficial.presentation.views.dialogs.CreateMatchDialogFragment;
 import example.example.com.sportsofficial.presentation.views.dialogs.RemoveSportDialogFragment;
 import example.example.com.sportsofficial.presentation.views.fragments.HomeFragment;
-import example.example.com.sportsofficial.presentation.views.fragments.SportTabsFragment;
+import example.example.com.sportsofficial.presentation.views.fragments.MatchListFragment;
 
 
 /**
@@ -336,6 +336,18 @@ public class MainActivity extends ActionBarActivity implements MainView, Injecto
      */
     @Override
     public void navigateToSportView(int sportId) {
+        MatchListFragment fragment = new MatchListFragment();
+
+        // Create and add the arguments to the fragment
+        Bundle args = new Bundle();
+        args.putInt(getString(R.string.sport), sportId);
+        fragment.setArguments(args);
+
+        // Insert the fragment by replacing the existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragment, fragment, "Fragment").commit();
+
+        /*
         // Create the sports fragment
         SportTabsFragment fragment = new SportTabsFragment();
 
@@ -347,6 +359,7 @@ public class MainActivity extends ActionBarActivity implements MainView, Injecto
         // Insert the fragment by replacing the existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment, fragment, "TabFragment").commit();
+        */
     }
 
     /**

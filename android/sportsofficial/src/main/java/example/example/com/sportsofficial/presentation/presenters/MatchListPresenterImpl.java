@@ -1,5 +1,7 @@
 package example.example.com.sportsofficial.presentation.presenters;
 
+import android.util.Log;
+
 import java.util.List;
 
 import example.example.com.sportsofficial.domain.exceptions.ErrorBundle;
@@ -28,6 +30,7 @@ public class MatchListPresenterImpl implements MatchListPresenter {
 
     @Override
     public void setSportId(final int sportId) {
+        Log.i("TAG", Integer.toString(sportId));
         mGetMatchListInteractor.executeSport(sportId, mGetMatchListCallback);
     }
 
@@ -72,7 +75,9 @@ public class MatchListPresenterImpl implements MatchListPresenter {
         @Override
         public void onMatchListLoaded(List<Match> matchList) {
             for (Match match : matchList) {
-                mModel.addMatch(match);
+                if (!mModel.hasMatch(match)) {
+                    mModel.addMatch(match);
+                }
             }
         }
 

@@ -70,45 +70,6 @@ public class MainPresenterImpl implements MainPresenter {
      */
     @Override
     public void onCreate() {
-        Match match = new Match();
-        match.setSportId(1);
-        match.setHomeTeamScore(10);
-        match.setAwayTeamScore(11);
-        match.setHomeTeamName("Dolphins");
-        match.setAwayTeamName("Jets");
-        mAddMatchInteractor.execute(match, mAddMatchCallback);
-        match = new Match();
-        match.setSportId(1);
-        match.setHomeTeamScore(10);
-        match.setAwayTeamScore(11);
-        match.setHomeTeamName("Patriots");
-        match.setAwayTeamName("Seahawks");
-        mAddMatchInteractor.execute(match, mAddMatchCallback);
-        match = new Match();
-        match.setSportId(1);
-        match.setHomeTeamScore(2);
-        match.setAwayTeamScore(3);
-        match.setHomeTeamName("FSU");
-        match.setAwayTeamName("UF");
-        mAddMatchInteractor.execute(match, mAddMatchCallback);
-
-        match = new Match();
-        match.setSportId(2);
-        match.setHomeTeamScore(10);
-        match.setAwayTeamScore(11);
-        match.setHomeTeamName("Heat");
-        match.setAwayTeamName("Thunder");
-
-        mAddMatchInteractor.execute(match, mAddMatchCallback);
-        match = new Match();
-        match.setSportId(3);
-        match.setHomeTeamScore(10);
-        match.setAwayTeamScore(11);
-        match.setHomeTeamName("Diamondback");
-        match.setAwayTeamName("Marlins");
-
-        mAddMatchInteractor.execute(match, mAddMatchCallback);
-
         mGetSportListInteractor.execute(mGetSportListCallback);
         mView.navigateToHome();
     }

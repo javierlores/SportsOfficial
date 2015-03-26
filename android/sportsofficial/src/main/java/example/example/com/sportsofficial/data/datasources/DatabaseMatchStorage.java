@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +30,12 @@ public class DatabaseMatchStorage {
         match.setAwayTeamName(res.getString(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_AWAY_TEAM_NAME)));
         match.setAwayTeamScore(res.getInt(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_AWAY_TEAM_SCORE)));
         String date_time = res.getString(res.getColumnIndex(DatabaseHelper.MATCHES_KEY_DATETIME));
+        res.close();
         database.close();
         return match;
     }
 
     public List<Match> getMatchList() {
-        Log.i("DATABASE", "Getting Match List");
         SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
         List list = new ArrayList();
         Cursor res = database.rawQuery("select * from matches", null);
@@ -53,13 +52,12 @@ public class DatabaseMatchStorage {
             list.add(match);
             res.moveToNext();
         }
+        res.close();
         database.close();
         return list;
     }
 
     public void addMatch(Match match) {
-        Log.i("DATABASE", "Adding MatchID: " + match.getMatchId());
-
         SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.MATCHES_KEY_HOME_TEAM_NAME, match.getHomeTeamName());

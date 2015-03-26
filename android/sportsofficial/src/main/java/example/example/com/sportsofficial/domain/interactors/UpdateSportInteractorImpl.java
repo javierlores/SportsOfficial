@@ -41,11 +41,11 @@ public class UpdateSportInteractorImpl implements UpdateSportInteractor {
     private SportRepository.UpdateSportCallback mUpdateSportCallback =
             new SportRepository.UpdateSportCallback() {
         @Override
-        public void onSportUpdated() {
+        public void onSportUpdated(final Sport sport) {
             mPostExecutionThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    mCallback.onSportUpdated();
+                    mCallback.onSportUpdated(sport);
                 }
             });
         }

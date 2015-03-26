@@ -1,11 +1,11 @@
 package example.example.com.sportsofficial.presentation.presenters;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
 
+import java.util.List;
 import java.util.UUID;
 
 import example.example.com.sportsofficial.R;
@@ -69,6 +69,7 @@ public class MainPresenterImpl implements MainPresenter {
      */
     @Override
     public void onCreate() {
+        /*
         // Add the default sports
         int sportsCount = mApp.getResources().getInteger(R.integer.default_sports_count);
         String[] sportNames = mApp.getResources().getStringArray(R.array.default_sport_names);
@@ -87,7 +88,9 @@ public class MainPresenterImpl implements MainPresenter {
             mModel.addSport(sport);
             mView.addSportNav(sport);
         }
+        */
 
+        mGetSportListInteractor.execute(mGetSportListCallback);
         mView.navigateToHome();
     }
 
@@ -193,8 +196,7 @@ public class MainPresenterImpl implements MainPresenter {
 
     @Override
     public void onRemoveSportDialogPositiveClicked(String sportTitle) {
-        mView.removeSportNav(mModel.getSport(sportTitle));
-        mModel.removeSport(sportTitle);
+        mRemoveSportInteractor.execute(mModel.getSport(sportTitle).getId(), mRemoveSportCallback);
     }
 
     PebbleKit.PebbleDataReceiver dataHandler = new PebbleKit.PebbleDataReceiver(PEBBLE_APP_UUID){
@@ -233,10 +235,42 @@ public class MainPresenterImpl implements MainPresenter {
         }
     };
 
-    private AddSportInteractor.Callback mAddSportCallback = new AddSportInteractor.Callback() {
+    private GetSportListInteractor.Callback mGetSportListCallback =
+            new GetSportListInteractor.Callback() {
         @Override
-        public void onSportAdded() {
+        public void onSportListLoaded(List<Sport> sportList) {
+            for (Sport sport : sportList) {
+                mModel.addSport(sport);
+                mView.addSportNav(sport);
+            }
+        }
 
+        @Override
+        public void onError(ErrorBundle errorBundle) {
+
+        }
+    };
+
+    private AddSportInteractor.Callback mAddSportCallback =
+            new AddSportInteractor.Callback() {
+        @Override
+        public void onSportAdded(Sport sport) {
+            mModel.addSport(sport);
+            mView.addSportNav(sport);
+        }
+
+        @Override
+        public void onError(ErrorBundle errorBundle) {
+
+        }
+    };
+
+    private RemoveSportInteractor.Callback mRemoveSportCallback =
+            new RemoveSportInteractor.Callback() {
+        @Override
+        public void onSportRemoved(int sportId) {
+            mView.removeSportNav(mModel.getSport(sportId));
+            mModel.removeSport(sportId);
         }
 
         @Override

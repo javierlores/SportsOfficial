@@ -19,6 +19,15 @@ public class MainModel {
         return null;
     }
 
+    public Sport getSport(int sportId) {
+        for(Sport sport : mSports) {
+            if (sport.getId() == sportId) {
+                return sport;
+            }
+        }
+        return null;
+    }
+
     public List<Sport> getSports() {
         return mSports;
     }
@@ -40,6 +49,14 @@ public class MainModel {
     public void removeSport(String sportTitle) {
         for(Sport sport : mSports) {
             if (sport.getName().equals(sportTitle)) {
+                mSports.remove(sport);
+            }
+        }
+    }
+
+    public void removeSport(int sportId) {
+        for(Sport sport : mSports) {
+            if (sport.getId() == sportId) {
                 mSports.remove(sport);
             }
         }

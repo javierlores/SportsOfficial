@@ -41,11 +41,11 @@ public class AddSportInteractorImpl implements AddSportInteractor {
     private SportRepository.AddSportCallback mAddSportCallback =
             new SportRepository.AddSportCallback() {
         @Override
-        public void onSportAdded() {
+        public void onSportAdded(final Sport sport) {
             mPostExecutionThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    mCallback.onSportAdded();
+                    mCallback.onSportAdded(sport);
                 }
             });
         }

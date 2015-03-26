@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,12 @@ public class DatabaseSportStorage {
         Cursor res = database.rawQuery( "select * from sports where id="+id+"", null );
         //return res;
         Sport sport = new Sport();
+        sport.setId(res.getInt(res.getColumnIndex(DatabaseHelper.SPORTS_KEY_ID)));
         sport.setName(res.getString(res.getColumnIndex(DatabaseHelper.SPORTS_KEY_NAME)));
         sport.setSingleClick(res.getInt(res.getColumnIndex(DatabaseHelper.SPORTS_KEY_SINGLE_CLICK)));
         sport.setDoubleClick(res.getInt(res.getColumnIndex(DatabaseHelper.SPORTS_KEY_DOUBLE_CLICK)));
         sport.setLongClick(res.getInt(res.getColumnIndex(DatabaseHelper.SPORTS_KEY_LONG_CLICK)));
+        res.close();
         database.close();
         return sport;
     }
@@ -33,10 +36,11 @@ public class DatabaseSportStorage {
     public List<Sport> getSportList() {
         SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
         List list = new ArrayList();
-        Cursor res = database.rawQuery("select * from matches", null);
+        Cursor res = database.rawQuery("select * from sports", null);
         res.moveToFirst();
         while (res.isAfterLast() == false) {
             Sport sport = new Sport();
+            sport.setId(res.getInt(res.getColumnIndex(DatabaseHelper.SPORTS_KEY_ID)));
             sport.setName(res.getString(res.getColumnIndex(DatabaseHelper.SPORTS_KEY_NAME)));
             sport.setSingleClick(res.getInt(res.getColumnIndex(DatabaseHelper.SPORTS_KEY_SINGLE_CLICK)));
             sport.setDoubleClick(res.getInt(res.getColumnIndex(DatabaseHelper.SPORTS_KEY_DOUBLE_CLICK)));
@@ -45,6 +49,7 @@ public class DatabaseSportStorage {
             list.add(sport);
             res.moveToNext();
         }
+        res.close();
         database.close();
         return list;
     }
@@ -52,6 +57,7 @@ public class DatabaseSportStorage {
     public void addSport(Sport sport) {
         SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        Log.i("SPORT", sport.getName());
         values.put(DatabaseHelper.SPORTS_KEY_NAME, sport.getName());
         values.put(DatabaseHelper.SPORTS_KEY_SINGLE_CLICK, sport.getSingleClick());
         values.put(DatabaseHelper.SPORTS_KEY_DOUBLE_CLICK, sport.getDoubleClick());

@@ -36,13 +36,14 @@ public class RemoveSportInteractorImpl implements RemoveSportInteractor {
         mSportRepository.removeSport(mSportId, mRemoveSportCallback);
     }
 
-    private SportRepository.RemoveSportCallback mRemoveSportCallback = new SportRepository.RemoveSportCallback() {
+    private SportRepository.RemoveSportCallback mRemoveSportCallback =
+            new SportRepository.RemoveSportCallback() {
         @Override
-        public void onSportRemoved() {
+        public void onSportRemoved(final int sportId) {
             mPostExecutionThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    mCallback.onSportRemoved();
+                    mCallback.onSportRemoved(sportId);
                 }
             });
         }

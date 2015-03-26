@@ -6,7 +6,7 @@ import example.example.com.sportsofficial.presentation.models.Sport;
 
 public interface AddSportInteractor extends Interactor {
     public interface Callback {
-        public void onSportAdded();
+        public void onSportAdded(Sport sport);
         public void onError(ErrorBundle errorBundle);
     }
 

@@ -85,6 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + MATCHES_KEY_DATETIME + " DATETIME" + ")";
         db.execSQL(CREATE_MATCHES_TABLE);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed

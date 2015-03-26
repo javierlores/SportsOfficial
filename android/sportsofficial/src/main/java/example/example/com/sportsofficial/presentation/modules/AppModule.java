@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import example.example.com.sportsofficial.data.datasources.DatabaseMatchStorage;
+import example.example.com.sportsofficial.data.datasources.DatabaseSportStorage;
 import example.example.com.sportsofficial.data.repositories.LeagueRepository;
 import example.example.com.sportsofficial.data.repositories.MatchRepository;
 import example.example.com.sportsofficial.data.repositories.SportRepository;
@@ -60,7 +61,7 @@ public class AppModule {
     }
 
     @Provides @Singleton
-    public SportRepository provideSportRepository() {
-        return new SportRepository();
+    public SportRepository provideSportRepository(DatabaseSportStorage databaseSportStorage) {
+        return new SportRepository(databaseSportStorage);
     }
 }

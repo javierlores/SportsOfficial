@@ -13,7 +13,7 @@ public class Sport {
     private boolean mHasMatches;
 
     public Sport() {
-        mId = -1;
+        mId = 0;
         mName = null;
         mSingleClick = -1;
         mDoubleClick = -1;

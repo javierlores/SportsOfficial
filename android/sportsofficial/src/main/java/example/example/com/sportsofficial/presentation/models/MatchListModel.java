@@ -25,14 +25,18 @@ public class MatchListModel extends Observable {
         mSport = sport;
     }
 
-    public void setMatchList(List<Match> matchList) {
-        mMatchList = matchList;
-        setChanged();
-        notifyObservers(matchList);
-    }
-
     public void addMatch(Match match) {
         mMatchList.add(match);
+        setChanged();
+        notifyObservers();
+    }
+
+    public void removeMatch(int matchId) {
+        for (Match match : mMatchList) {
+            if (match.getMatchId() == matchId) {
+                mMatchList.remove(match);
+            }
+        }
         setChanged();
         notifyObservers();
     }

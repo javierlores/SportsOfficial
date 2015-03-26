@@ -71,7 +71,9 @@ public class MatchListPresenterImpl implements MatchListPresenter {
     private GetMatchListInteractor.Callback mGetMatchListCallback = new GetMatchListInteractor.Callback() {
         @Override
         public void onMatchListLoaded(List<Match> matchList) {
-            mView.setMatchList(matchList);
+            for (Match match : matchList) {
+                mModel.addMatch(match);
+            }
         }
 
         @Override
@@ -83,7 +85,7 @@ public class MatchListPresenterImpl implements MatchListPresenter {
     private RemoveMatchInteractor.Callback mRemoveMatchCallback = new RemoveMatchInteractor.Callback() {
         @Override
         public void onMatchRemoved(int matchId) {
-            //mModel.removeMatch(matchId);
+            mModel.removeMatch(matchId);
         }
 
         @Override

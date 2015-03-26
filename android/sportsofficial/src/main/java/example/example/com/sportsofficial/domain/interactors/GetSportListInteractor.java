@@ -7,7 +7,7 @@ import example.example.com.sportsofficial.presentation.models.Sport;
 
 public interface GetSportListInteractor extends Interactor {
     public interface Callback {
-        public void onSportListLoaded(List<Sport> sport);
+        public void onSportListLoaded(List<Sport> sportList);
         public void onError(ErrorBundle errorBundle);
     }
 
